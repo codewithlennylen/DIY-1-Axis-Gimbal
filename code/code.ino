@@ -11,22 +11,18 @@
     #include "Wire.h"
 #endif
 
-// class default I2C address is 0x68
-// specific I2C addresses may be passed as a parameter here
-// AD0 low = 0x68 (default for SparkFun breakout and InvenSense evaluation board)
-// AD0 high = 0x69
+
 MPU6050 mpu;
-//MPU6050 mpu(0x69); // <-- use for AD0 high
 
 Servo actuatorServo;
 
-double setPoint = 0.0;
+double setPoint = 0;
 double input, output;
 
 
-double Kp = 60;
+double Kp = 10;
 double Ki = 0;
-double Kd = 0.5;
+double Kd = 0;
 
 PID myPID(&input, &output, &setPoint, Kp, Ki, Kd, DIRECT);
 
@@ -104,9 +100,10 @@ void setup() {
     // 180 - CW
     // 85 - FLAT ->  Roll angle 0.0 (Desired Set Point) | 0.6~
     // 0 - CCW
-    actuatorServo.write(85);
+    actuatorServo.write(100);
 
     myPID.SetMode(AUTOMATIC); // Turn the PID on
+//    myPID.setOutputLimits(0, 180);
 
     // NOTE: 8MHz or slower host processors, like the Teensy @ 3.3V or Arduino
     // Pro Mini running at 3.3V, cannot handle this baud rate reliably due to
