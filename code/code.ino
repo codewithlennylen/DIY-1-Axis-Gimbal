@@ -20,7 +20,7 @@ double setPoint = 0;
 double input, output;
 
 
-double Kp = 10;
+double Kp = 1.5;
 double Ki = 0;
 double Kd = 0;
 
@@ -100,10 +100,11 @@ void setup() {
     // 180 - CW
     // 85 - FLAT ->  Roll angle 0.0 (Desired Set Point) | 0.6~
     // 0 - CCW
-    actuatorServo.write(100);
+    actuatorServo.write(random(0,180));
 
     myPID.SetMode(AUTOMATIC); // Turn the PID on
-//    myPID.setOutputLimits(0, 180);
+    myPID.SetOutputLimits(0, 180);
+    myPID.SetControllerDirection(REVERSE);
 
     // NOTE: 8MHz or slower host processors, like the Teensy @ 3.3V or Arduino
     // Pro Mini running at 3.3V, cannot handle this baud rate reliably due to
@@ -239,11 +240,14 @@ void loop() {
 //            Serial.print("\t");
 //            Serial.print(ypr[1] * 180/M_PI);
 //            Serial.print("\t");
-            Serial.println(ypr[2] * 180/M_PI);
+            Serial.print(ypr[2] * 180/M_PI);
 
-            input = ypr[2] * 180/M_PI;
+            double real_position = ypr[2] * 180/M_PI;
+            input = constrain(real_position, -30, 30);
+            Serial.print("\t");
+            Serial.println(input);
             myPID.Compute();
-            actuatorServo.write(output);
+//            actuatorServo.write(output);
             
         #endif
 
