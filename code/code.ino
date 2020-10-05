@@ -100,7 +100,7 @@ void setup() {
     // 180 - CW
     // 85 - FLAT ->  Roll angle 0.0 (Desired Set Point) | 0.6~
     // 0 - CCW
-    actuatorServo.write(random(0,180));
+//    actuatorServo.write(random(0,180));
 
     myPID.SetMode(AUTOMATIC); // Turn the PID on
     myPID.SetOutputLimits(0, 180);
